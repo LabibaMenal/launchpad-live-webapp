@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Little Rye Bakery</title>
+<meta name="description" content="Small neighborhood bakery. Sourdough, pastries and cakes baked fresh every morning.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pistachio: #e4ebd3;
+    --aubergine: #2b1b2e;
+    --raspberry: #c9335b;
+    --crust: #e8a33d;
+    --white: #fffefb;
+    --serif: "Young Serif", Georgia, "Times New Roman", serif;
+    --sans: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--pistachio);
+    color: var(--aubergine);
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--raspberry); outline-offset: 3px; }
+
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  header.top { padding: 1.25rem 0; }
+  header.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .brand { font-family: var(--serif); font-size: 1.25rem; text-decoration: none; }
+  nav { display: flex; gap: 1.5rem; }
+  nav a { text-decoration: none; font-weight: 600; }
+  nav a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  .hero { padding: 3rem 0 4.5rem; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(3.5rem, 13vw, 10rem);
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    margin: 0 0 2rem;
+  }
+  .hero p { max-width: 34rem; font-size: 1.25rem; margin: 0 0 2rem; }
+  .btn {
+    display: inline-block;
+    background: var(--aubergine);
+    color: var(--white);
+    padding: 0.85rem 1.6rem;
+    border: 0;
+    border-radius: 999px;
+    font: 600 1rem var(--sans);
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--raspberry); }
+
+  .board { background: var(--aubergine); color: var(--white); padding: 4rem 0; }
+  .board h2, .contact h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 0.5rem; }
+  .board .sub { color: var(--crust); margin: 0 0 2.5rem; }
+  .items { list-style: none; margin: 0; padding: 0; }
+  .items li {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr auto;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 1.1rem 0;
+    border-top: 1px solid rgba(255, 254, 251, 0.25);
+  }
+  .items li:last-child { border-bottom: 1px solid rgba(255, 254, 251, 0.25); }
+  .items time { color: var(--crust); font-weight: 600; }
+  .items strong { font-family: var(--serif); font-weight: 400; font-size: 1.35rem; }
+  .items span.note { display: block; font-size: 0.95rem; opacity: 0.8; }
+  .items .price { font-weight: 600; }
+
+  .info { padding: 4rem 0; }
+  .info .wrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 2.5rem; }
+  .info h3 { font-family: var(--serif); font-weight: 400; font-size: 1.5rem; margin: 0 0 0.5rem; }
+  .info p { margin: 0; }
+
+  .contact { background: var(--crust); padding: 4rem 0 5rem; }
+  .contact .wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 3rem; }
+  .contact p { max-width: 26rem; }
+  form { display: grid; gap: 1.25rem; }
+  label { display: grid; gap: 0.4rem; font-weight: 600; }
+  input, textarea {
+    font: 400 1rem var(--sans);
+    color: var(--aubergine);
+    background: var(--white);
+    border: 2px solid var(--aubergine);
+    border-radius: 0.5rem;
+    padding: 0.75rem 0.9rem;
+    width: 100%;
+  }
+  textarea { min-height: 9rem; resize: vertical; }
+  form .btn { justify-self: start; }
+
+  footer { background: var(--aubergine); color: var(--white); padding: 1.5rem 0; font-size: 0.95rem; }
+
+  @media (max-width: 48rem) {
+    .contact .wrap { grid-template-columns: 1fr; gap: 2rem; }
+    .items li { grid-template-columns: 1fr auto; }
+    .items time { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#">Little Rye Bakery</a>
+    <nav aria-label="Main">
+      <a href="#baking">What's baking</a>
+      <a href="#visit">Visit</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <h1>Bread, still warm.</h1>
+      <p>We bake sourdough, pastries and small cakes every morning in a tiny corner shop. Come early, because when it's gone, it's gone.</p>
+      <a class="btn" href="#baking">See today's bakes</a>
+    </div>
+  </section>
+
+  <section class="board" id="baking">
+    <div class="wrap">
+      <h2>What's baking</h2>
+      <p class="sub">Out of the oven at these times, Tuesday to Sunday.</p>
+      <ul class="items">
+        <li>
+          <time>7:00 am</time>
+          <div><strong>Country sourdough</strong><span class="note">Long-fermented, crackly crust</span></div>
+          <span class="price">$7</span>
+        </li>
+        <li>
+          <time>7:30 am</time>
+          <div><strong>Butter croissant</strong><span class="note">Laminated by hand, 27 layers</span></div>
+          <span class="price">$4</span>
+        </li>
+        <li>
+          <time>9:00 am</time>
+          <div><strong>Cardamom bun</strong><span class="note">Brown sugar glaze</span></div>
+          <span class="price">$4.50</span>
+        </li>
+        <li>
+          <time>11:00 am</time>
+          <div><strong>Seeded rye loaf</strong><span class="note">Dense, sweet and good with cheese</span></div>
+          <span class="price">$8</span>
+        </li>
+        <li>
+          <time>1:00 pm</time>
+          <div><strong>Raspberry tart</strong><span class="note">Almond cream, fresh fruit</span></div>
+          <span class="price">$6</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="info" id="visit">
+    <div class="wrap">
+      <div>
+        <h3>Find us</h3>
+        <p>12 Baker Lane<br>Your Town, ST 00000</p>
+      </div>
+      <div>
+        <h3>Opening hours</h3>
+        <p>Tuesday to Friday, 7 am to 4 pm<br>Saturday and Sunday, 8 am to 2 pm<br>Closed Monday</p>
+      </div>
+      <div>
+        <h3>Custom orders</h3>
+        <p>Birthday cakes and large orders need 3 days' notice. Send us a message below.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div>
+        <h2>Send us a message</h2>
+        <p>Questions, custom orders or a compliment for the baker? We reply within one working day.</p>
+      </div>
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="contact">
+        <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
+        <label for="name">Name
+          <input id="name" name="name" type="text" autocomplete="name" required>
+        </label>
+        <label for="message">Message
+          <textarea id="message" name="message" required></textarea>
+        </label>
+        <button class="btn" type="submit">Send message</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">&copy; 2026 Little Rye Bakery. Baked fresh daily.</div>
+</footer>
+
+</body>
+</html>

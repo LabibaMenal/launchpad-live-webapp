@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Launchpad</title>
+<style>
+:root{--bg:#f5f6fb;--card:#fff;--ink:#14152b;--mute:#6b6f8d;--line:#e4e6f2;--acc:#5b5bf0;--acc2:#8b5cf6;--ok:#16a34a;--warn:#d97706;--bad:#dc2626}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.banner{background:#14152b;color:#c9cbe8;font-size:12.5px;padding:8px 16px;text-align:center}
+header{display:flex;align-items:center;justify-content:space-between;max-width:880px;margin:0 auto;padding:16px 20px 0}
+.logo{font-weight:800;font-size:20px;cursor:pointer;background:linear-gradient(90deg,var(--acc),var(--acc2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.wrap{max-width:880px;margin:0 auto;padding:20px}
+h1{font-size:clamp(26px,5vw,40px);line-height:1.15;margin:12px 0 8px}
+h2{margin:6px 0 4px}
+.sub{color:var(--mute);font-size:17px;margin:0 0 22px}
+.mute{color:var(--mute);font-size:14px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;text-align:left;font:inherit;color:inherit}
+button.card{cursor:pointer;transition:.15s}
+button.card:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:0 8px 24px rgba(91,91,240,.14)}
+.card .ico{font-size:30px}
+.card b{display:block;font-size:18px;margin:8px 0 2px}
+.btn{border:0;border-radius:12px;padding:12px 20px;font:inherit;font-weight:600;cursor:pointer;color:#fff;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.btn:disabled{opacity:.6;cursor:wait}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 12px;font-size:13px}
+.link{background:none;border:0;color:var(--acc);font:inherit;font-weight:600;cursor:pointer;padding:0}
+.strip{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.pill{display:inline-block;padding:4px 10px;border-radius:99px;background:#eceeff;color:var(--acc);font-size:13px;font-weight:600}
+.pill.ok{background:#e3f6ea;color:var(--ok)}
+input[type=text],textarea{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;font:inherit;background:#fff}
+textarea{min-height:90px;resize:vertical}
+label.drop{display:block;border:2px dashed #c4c7ee;border-radius:16px;padding:28px;text-align:center;cursor:pointer;background:#fafaff;margin-bottom:12px}
+label.drop input{display:none}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:15px}
+.row:last-child{border:0}
+.step{display:flex;gap:10px;padding:6px 0;color:var(--mute)}
+.step.done{color:var(--ink)}
+.step i{font-style:normal;width:22px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:14px 0}
+.tab{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 16px;font:inherit;font-weight:600;cursor:pointer}
+.tab.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.url{font-weight:700;font-size:18px;word-break:break-all}
+.msg{background:#f8f9ff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:14px}
+code,.code{background:#14152b;color:#d8dbff;border-radius:10px;padding:10px 12px;display:block;font-size:13px;overflow-x:auto;white-space:pre}
+table{width:100%;border-collapse:collapse;font-size:14px;margin:10px 0}
+td,th{border:1px solid var(--line);padding:8px;text-align:left}
+th{background:#f1f2fb}
+.big{font-size:56px;font-weight:800;line-height:1}
+.bar{height:10px;background:#eceeff;border-radius:99px;overflow:hidden;margin:10px 0}
+.bar>div{height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2));width:0;transition:width .6s}
+.ok{color:var(--ok)}.bad{color:var(--bad)}.lock{color:var(--mute)}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:#14152b;color:#fff;padding:10px 18px;border-radius:99px;opacity:0;transition:.25s;pointer-events:none;font-size:14px}
+#toast.on{opacity:1;transform:translateX(-50%)}
+</style>
+</head>
+<body>
+<div class="banner">Interactive prototype: build, DNS and email steps are simulated so you can see the full experience. The Launch Score runs real checks.</div>
+<header><div class="logo" data-go="home">🚀 Launchpad</div><button class="link" data-go="score">Launch Score</button></header>
+<main class="wrap">
+
+<!-- HOME -->
+<section id="home">
+  <h1>From “I have an idea” to live, in one place.</h1>
+  <p class="sub">AI writes your app. Launchpad gets it online, on your own domain, with forms.</p>
+  <div class="cards">
+    <button class="card" data-go="code"><div class="ico">📁</div><b>I have code</b><span class="mute">Upload it. We host it in one click.</span></button>
+    <button class="card" data-go="idea"><div class="ico">💡</div><b>I have an idea</b><span class="mute">Describe it. We draft it, we launch it.</span></button>
+    <button class="card" data-go="help"><div class="ico">🤝</div><b>Do it for me</b><span class="mute">Pay once. Our team does everything.</span></button>
+  </div>
+  <div class="strip"><span class="pill">Build</span><span class="pill">Host</span><span class="pill">Domain</span><span class="pill">Forms</span><span class="pill">Update</span></div>
+  <div class="card">Already have a site somewhere? <button class="link" data-go="score">Check its Launch Score →</button></div>
+</section>
+
+<!-- LANE 2: CODE -->
+<section id="code" hidden>
+  <button class="link" data-go="home">← Back</button>
+  <h2>Upload your app</h2>
+  <p class="mute">Any static site, React build or Node app. No servers, no terminal.</p>
+  <label class="drop"><input type="file" id="file" accept=".zip"><span id="dropTxt">📦 Drop a .zip here or click to choose</span></label>
+  <p class="mute">No file handy? Just name your site and press the button (sample site).</p>
+  <input type="text" id="siteName" value="my-bakery" aria-label="Site name">
+  <p><button class="btn" id="createBtn">Create link</button></p>
+  <div class="card" id="log" hidden></div>
+</section>
+
+<!-- LANE 1: IDEA -->
+<section id="idea" hidden>
+  <button class="link" data-go="home">← Back</button>
+  <h2>Describe your app</h2>
+  <textarea id="ideaTxt" placeholder="e.g. A booking site for my dog-grooming shop with a contact form"></textarea>
+  <p><button class="btn" id="genBtn">Generate draft</button></p>
+  <div class="card" id="draft" hidden>
+    <span class="pill">AI draft (simulated preview)</span>
+    <h2 id="draftTitle"></h2>
+    <p class="mute">Home · Services · Contact form · Footer</p>
+    <button class="btn" id="liveBtn">Make it live</button>
+  </div>
+  <div class="card" id="log3" hidden></div>
+</section>
+
+<!-- LANE 3: HELP -->
+<section id="help" hidden>
+  <button class="link" data-go="home">← Back</button>
+  <h2>Let our team do it</h2>
+  <textarea id="helpTxt" placeholder="Tell us what you need live: site, domain, forms…"></textarea>
+  <p><input type="text" id="helpMail" placeholder="Your email"></p>
+  <p><button class="btn" id="helpBtn">Send request</button></p>
+  <div class="card" id="ticket" hidden>
+    <b id="tid"></b>
+    <div class="step done"><i>✅</i>Request received</div>
+    <div class="step"><i>⏳</i>Team assigned (within 24h)</div>
+    <div class="step"><i>○</i>Built, launched, handed over</div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="live" hidden>
+  <div class="card">
+    <div class="top">
+      <div><span class="pill ok">🟢 Live</span> <span class="pill" id="curVer"></span></div>
+      <button class="btn ghost sm" id="copyBtn">Copy link</button>
+    </div>
+    <div class="url" id="liveUrl"></div>
+    <div class="strip"><span class="pill ok">✅ HTTPS</span><span class="pill ok">✅ Forms working</span><span class="pill" id="chipDomain"></span></div>
+  </div>
+  <div class="tabs">
+    <button class="tab on" data-t="over">Overview</button>
+    <button class="tab" data-t="forms">Forms (<span id="msgCount">0</span>)</button>
+    <button class="tab" data-t="vers">Versions</button>
+    <button class="tab" data-t="dom">Domain</button>
+  </div>
+
+  <div class="panel card" id="p-over">
+    <b>Update your site</b>
+    <p class="mute">Re-upload your app. A new version goes live, the old one is saved.</p>
+    <button class="btn" id="updBtn">Update site</button>
+    <div id="log2" hidden style="margin-top:10px"></div>
+    <p><button class="link" data-go="score">Run a Launch Score →</button></p>
+  </div>
+
+  <div class="panel card" id="p-forms" hidden>
+    <b>Your site’s contact form</b> <span class="mute">(what visitors see on <span id="siteTitle"></span>)</span>
+    <p><input type="text" id="fName" placeholder="Visitor name"></p>
+    <p><textarea id="fMsg" placeholder="Hello, I’d like to order a cake…"></textarea></p>
+    <button class="btn" id="fBtn">Send</button>
+    <p class="mute">Any HTML form works with one line, no backend needed:</p>
+    <code>&lt;form action="https://launchpad.app/f/YOUR-SITE-ID" method="post"&gt;</code>
+    <p><b>📬 Inbox</b> <span class="mute">(owner also gets an email, simulated here)</span></p>
+    <div id="inbox"></div>
+  </div>
+
+  <div class="panel card" id="p-vers" hidden>
+    <b>Version history</b> <span class="mute">One click to roll back a mistake.</span>
+    <div id="verList"></div>
+  </div>
+
+  <div class="panel card" id="p-dom" hidden>
+    <b>Connect your own domain</b>
+    <p class="mute">You buy the domain anywhere. We guide the rest and switch on HTTPS automatically.</p>
+    <input type="text" id="domIn" value="mybakery.com" aria-label="Domain">
+    <p><button class="btn" id="domBtn">Show me what to do</button></p>
+    <div id="domSteps" hidden>
+      <p>Add this record at your domain provider:</p>
+      <table><tr><th>Type</th><th>Name</th><th>Value</th></tr><tr><td>CNAME</td><td id="recName"></td><td>edge.launchpad.app</td></tr></table>
+      <button class="btn" id="dnsBtn">Check DNS</button> <span class="mute">(simulated check)</span>
+      <div id="dnsLog" style="margin-top:10px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAUNCH SCORE -->
+<section id="score" hidden>
+  <button class="link" data-go="home">← Back</button>
+  <h2>Launch Score</h2>
+  <p class="mute">Paste any website. We check if it’s really ready to go live and tell you what to fix.</p>
+  <input type="text" id="sUrl" placeholder="https://your-site.vercel.app">
+  <p><button class="btn" id="sBtn">Check my site</button></p>
+  <div class="card" id="sOut" hidden></div>
+</section>
+
+</main>
+<div id="toast"></div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const S={name:'my-bakery',ver:[],cur:0,msgs:[],domain:null,pending:null};
+const slug=t=>(t||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,24)||'my-site';
+const now=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+const host=()=>S.domain||S.name+'.launchpad.app';
+function show(id){$$('main>section').forEach(s=>s.hidden=s.id!==id);window.scrollTo(0,0)}
+function toast(t){const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),2200)}
+function tab(t){$$('.tab').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$$('.panel').forEach(p=>p.hidden=p.id!=='p-'+t)}
+
+function renderLive(){
+  $('#liveUrl').textContent='https://'+host();
+  $('#chipDomain').textContent=S.domain?'✅ Custom domain':'🌐 Free subdomain';
+  $('#curVer').textContent='v'+S.ver[S.cur].v;
+  $('#siteTitle').textContent=S.name;
+  const vl=$('#verList');vl.innerHTML='';
+  S.ver.slice().reverse().forEach(v=>{
+    const i=S.ver.indexOf(v),r=document.createElement('div');r.className='row';
+    const l=document.createElement('span');l.textContent='v'+v.v+' · '+v.label+' · '+v.time;r.appendChild(l);
+    if(i===S.cur){const b=document.createElement('b');b.className='pill ok';b.textContent='Live now';r.appendChild(b)}
+    else{const b=document.createElement('button');b.className='btn ghost sm';b.textContent='Restore';b.onclick=()=>{S.cur=i;renderLive();toast('Rolled back to v'+v.v)};r.appendChild(b)}
+    vl.appendChild(r)});
+  const ib=$('#inbox');ib.innerHTML='';
+  if(!S.msgs.length){const p=document.createElement('p');p.className='mute';p.textContent='No messages yet. Send one from the form above.';ib.appendChild(p)}
+  S.msgs.slice().reverse().forEach(m=>{const d=document.createElement('div');d.className='msg';const a=document.createElement('b');a.textContent=m.from+' · '+m.time;const p=document.createElement('div');p.textContent=m.text;d.append(a,p);ib.appendChild(d)});
+  $('#msgCount').textContent=S.msgs.length;
+}
+
+async function steps(box,list){
+  box.hidden=false;box.innerHTML='';
+  const rows=list.map(t=>{const d=document.createElement('div');d.className='step';const i=document.createElement('i');i.textContent='○';const s=document.createElement('span');s.textContent=t;d.append(i,s);box.appendChild(d);return d});
+  for(const r of rows){r.firstChild.textContent='⏳';await sleep(600);r.firstChild.textContent='✅';r.classList.add('done')}
+}
+const BUILD=['Detecting app type (static site)','Installing dependencies','Building','Deploying to our server','Issuing HTTPS certificate'];
+async function deploy(label,boxSel,go){
+  await steps($(boxSel),BUILD);
+  S.ver.push({v:S.ver.length+1,label,time:now()});S.cur=S.ver.length-1;
+  renderLive();
+  if(go){show('live');tab('over');toast('🎉 Your site is live')}else toast('New version is live');
+}
+function fresh(name){S.name=slug(name);S.ver=[];S.msgs=[];S.domain=null}
+
+$$('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
+$$('.tab').forEach(b=>b.onclick=()=>tab(b.dataset.t));
+$('#file').onchange=e=>{const f=e.target.files[0];if(f){$('#dropTxt').textContent='📦 '+f.name;if(!$('#siteName').dataset.t)$('#siteName').value=slug(f.name.replace(/\.zip$/i,''))}};
+$('#siteName').oninput=e=>e.target.dataset.t=1;
+
+$('#createBtn').onclick=async e=>{e.target.disabled=true;fresh($('#siteName').value);await deploy('First deploy','#log',true);e.target.disabled=false};
+$('#updBtn').onclick=async e=>{e.target.disabled=true;await deploy('Updated site','#log2',false);e.target.disabled=false};
+$('#copyBtn').onclick=()=>{try{navigator.clipboard.writeText('https://'+host())}catch(e){}toast('Link copied')};
+
+$('#genBtn').onclick=async e=>{
+  const t=$('#ideaTxt').value.trim();if(!t){toast('Describe your app first');return}
+  e.target.disabled=true;e.target.textContent='Generating…';$('#draft').hidden=true;await sleep(1200);
+  $('#draftTitle').textContent=t.length>60?t.slice(0,57)+'…':t;$('#draft').hidden=false;
+  e.target.disabled=false;e.target.textContent='Generate draft';
+};
+$('#liveBtn').onclick=async e=>{e.target.disabled=true;fresh($('#ideaTxt').value.split(/\s+/).slice(0,3).join(' '));await deploy('AI draft launched','#log3',true);e.target.disabled=false};
+
+$('#helpBtn').onclick=()=>{
+  if(!$('#helpTxt').value.trim()){toast('Tell us what you need');return}
+  $('#tid').textContent='Request #LP-'+Math.floor(1000+Math.random()*9000);$('#ticket').hidden=false;toast('Request sent');
+};
+
+$('#fBtn').onclick=()=>{
+  const t=$('#fMsg').value.trim();if(!t){toast('Write a message first');return}
+  S.msgs.push({from:$('#fName').value.trim()||'Anonymous',text:t,time:now()});
+  $('#fMsg').value='';$('#fName').value='';renderLive();toast('📧 Delivered to inbox + owner email');
+};
+
+$('#domBtn').onclick=()=>{
+  const d=$('#domIn').value.trim().toLowerCase().replace(/^https?:\/\//,'').replace(/\/.*$/,'');
+  if(!/^[a-z0-9-]+(\.[a-z0-9-]+)+$/.test(d)){toast('Enter a domain like mybakery.com');return}
+  S.pending=d.startsWith('www.')?d:'www.'+d;$('#recName').textContent='www';$('#domSteps').hidden=false;$('#dnsLog').innerHTML='';
+};
+$('#dnsBtn').onclick=async e=>{
+  e.target.disabled=true;
+  await steps($('#dnsLog'),['DNS record found','HTTPS certificate issued','Domain connected']);
+  S.domain=S.pending;renderLive();toast('🌐 '+S.domain+' is connected');e.target.disabled=false;
+};
+
+const FREE=/(vercel\.app|netlify\.app|github\.io|pages\.dev|onrender\.com|herokuapp\.com|web\.app|firebaseapp\.com|launchpad\.app)$/;
+$('#sBtn').onclick=async e=>{
+  let raw=$('#sUrl').value.trim();if(!raw)return;
+  if(!/^https?:\/\//i.test(raw))raw='https://'+raw;
+  let u;try{u=new URL(raw)}catch(x){toast('That is not a valid URL');return}
+  e.target.disabled=true;e.target.textContent='Checking…';
+  let ok=false,ms=0;const t0=performance.now(),ac=new AbortController(),to=setTimeout(()=>ac.abort(),8000);
+  try{await fetch(u.href,{mode:'no-cors',cache:'no-store',signal:ac.signal});ok=true;ms=Math.round(performance.now()-t0)}catch(x){}
+  clearTimeout(to);
+  const rows=[
+    {n:'Site loads',p:25,ok:ok,fix:'We could not reach this site. Check the URL and that your host is running.'},
+    {n:'HTTPS enabled',p:25,ok:u.protocol==='https:',fix:'No HTTPS: browsers warn visitors. Launchpad turns it on automatically.'},
+    {n:'Fast response',p:15,ok:ok&&ms<1500,fix:ok?'Took '+ms+' ms. Compress images and aim for under 1.5 s.':'Could not measure speed.'},
+    {n:'Custom domain',p:10,ok:!FREE.test(u.hostname),fix:'Still on a free subdomain. A custom domain builds trust.'}
+  ];
+  const locked=[{n:'Mobile-ready',p:15},{n:'Form delivers messages',p:10}];
+  const sc=rows.reduce((a,r)=>a+(r.ok?r.p:0),0);
+  const out=$('#sOut');out.hidden=false;out.innerHTML='';
+  const h=document.createElement('div');h.className='top';
+  const big=document.createElement('div');big.innerHTML='<span class="big"></span> <span class="mute">/ 75 live checks</span>';big.firstChild.textContent=sc;
+  const who=document.createElement('span');who.className='pill';who.textContent=u.hostname;h.append(big,who);out.appendChild(h);
+  const bar=document.createElement('div');bar.className='bar';const bi=document.createElement('div');bar.appendChild(bi);out.appendChild(bar);
+  setTimeout(()=>bi.style.width=Math.round(sc/75*100)+'%',50);
+  rows.forEach(r=>{const d=document.createElement('div');d.className='row';const a=document.createElement('span');a.textContent=(r.ok?'✅ ':'❌ ')+r.n;const b=document.createElement('span');b.className=r.ok?'ok':'bad';b.textContent=r.ok?'+'+r.p:'0 / '+r.p;d.append(a,b);out.appendChild(d)});
+  locked.forEach(r=>{const d=document.createElement('div');d.className='row lock';const a=document.createElement('span');a.textContent='🔒 '+r.n;const b=document.createElement('span');b.textContent='Server check (built in Week 1) · '+r.p+' pts';d.append(a,b);out.appendChild(d)});
+  const fixes=rows.filter(r=>!r.ok);
+  const f=document.createElement('div');f.style.marginTop='12px';
+  if(fixes.length){const t=document.createElement('b');t.textContent='Fix next:';f.appendChild(t);fixes.forEach(r=>{const p=document.createElement('div');p.className='mute';p.textContent='• '+r.fix;f.appendChild(p)})}
+  else{f.className='ok';f.textContent='🎉 All live checks passed.'}
+  out.appendChild(f);
+  e.target.disabled=false;e.target.textContent='Check my site';
+};
+</script>
+</body>
+</html>
